@@ -3,15 +3,6 @@
 module TmlTokenParser
   class Parser
 
-    @@dots = {
-      'pt' => true,
-    }
-
-    @@mensurations = {
-      'O' => 'O',
-      'C' => 'C',
-    }
-
     def initialize(builder, token)
       @builder = builder
       @token = token
@@ -40,15 +31,14 @@ module TmlTokenParser
 
       if @child.class == TmlTokenParser::NoteParser ||
          @child.class == TmlTokenParser::RestParser ||
-         @child.class == TmlTokenParser::MiscParser
+         @child.class == TmlTokenParser::MiscParser ||
+         @child.class == TmlTokenParser::MensurationParser
         method, args = @child.parse
         @builder.send(method, args)
         return
       end
 
-      if @@mensurations.has_key? @token
-        @builder.comment(" mensuration sign: #{@@mensurations[@token]} ")
-      elsif @token =~ /^Lig/
+      if @token =~ /^Lig/
         @builder.LIGATURE("lig" => @token)
       else
         @builder.UNRECOGNIZED("XXX" => @token)
