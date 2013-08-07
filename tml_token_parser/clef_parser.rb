@@ -9,10 +9,6 @@ module TmlTokenParser
       'ClefG' => 'G clef',
     }
 
-    def initialize(token)
-      @token = token
-    end
-
     def parse
       args = {}
 
@@ -23,8 +19,8 @@ module TmlTokenParser
         nil
       end
 
-      return err ? unrecognized(@token, err) : :comment, args
-
+      @builder.send(:comment, args) unless err
+      unrecognized(@token, array) if err
     end
 
     private

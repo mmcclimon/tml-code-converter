@@ -14,23 +14,28 @@ module TmlTokenParser
       'FP'  => 'fusa',
     }
 
-    def initialize(token)
-      @token = token
-    end
-
     def parse
       args = {}
 
       err = catch :unrecognized do
+        # XXX figure out what to do with duplex, triplex longs, etc
+        mults = do_multiples
+
         args['dur'] = do_values
         nil
       end
 
-      return err ? unrecognized(@token, err) : :rest, args
+      @builder.send(:rest, args) unless err
+      unrecognized(@token, err) if err
 
     end
 
     private
+
+    def do_multiples
+      matches = @token.match(/^([234]+)/)
+      return matches ? matches[1] : 1
+    end
 
     def do_values
       matches = @token.match(/^([A-Z]+P)/)

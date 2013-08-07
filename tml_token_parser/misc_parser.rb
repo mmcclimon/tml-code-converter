@@ -13,10 +13,6 @@ module TmlTokenParser
       ']' => "right square bracket",
     }
 
-    def initialize(token)
-      @token = token
-    end
-
     def parse
       sym = nil
       args = {}
@@ -26,7 +22,8 @@ module TmlTokenParser
         nil
       end
 
-      return err ? unrecognized(@token, err) : sym, args
+      @builder.send(sym, args) unless err
+      unrecognized(@token, err) if err
 
     end
 

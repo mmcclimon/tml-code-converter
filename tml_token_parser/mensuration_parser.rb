@@ -13,10 +13,6 @@ module TmlTokenParser
       'TR' => 'triangle',
     }
 
-    def initialize(token)
-      @token = token
-    end
-
     # until we figure out how MEI does mensuration, we'll put these in
     # as comments
     def parse
@@ -28,7 +24,8 @@ module TmlTokenParser
         nil
       end
 
-      return err ? unrecognized(@token, err) : :comment, args
+      @builder.send(:comment, args) unless err
+      unrecognized(@token, arr) if err
     end
 
     private

@@ -22,14 +22,13 @@ module TmlTokenParser
       'sr' => 'semirubea',
     }
 
-    def initialize(token)
-      @token = token
-    end
-
     def parse
       args = {}   # the eventual arguments we'll send to the builder
 
       err = catch(:unrecognized) do
+        # XXX figure out what to do with duplex, triplex longs, etc
+        mults = do_multiples
+
         args['dur'] = do_values
 
         color = do_coloration
@@ -38,10 +37,16 @@ module TmlTokenParser
         nil   # ensure block exits with nil if no error caught
       end
 
-      return err ? unrecognized(@token, err) : :note, args
+      @builder.send(:note, args) unless err
+      unrecognized(@token, err) if err
     end
 
     private
+
+    def do_multiples
+      matches = @token.match(/^([234])/)
+      return matches ? matches[1] : 1
+    end
 
     def do_values
       matches = @token.match(/^([A-Z]+)/)
