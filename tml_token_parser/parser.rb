@@ -29,20 +29,9 @@ module TmlTokenParser
                   TmlTokenParser::MiscParser.new(@token)
                 end
 
-      if @child.class == TmlTokenParser::NoteParser ||
-         @child.class == TmlTokenParser::RestParser ||
-         @child.class == TmlTokenParser::MiscParser ||
-         @child.class == TmlTokenParser::MensurationParser
-        method, args = @child.parse
-        @builder.send(method, args)
-        return
-      end
+      method, args = @child.parse
+      @builder.send(method, args)
 
-      if @token =~ /^Lig/
-        @builder.LIGATURE("lig" => @token)
-      else
-        @builder.UNRECOGNIZED("XXX" => @token)
-      end
     end
 
     private
