@@ -44,7 +44,8 @@ module TmlTokenParser
                   TmlTokenParser::MiscParser.new(@token)
                 end
 
-      if @child.class == TmlTokenParser::NoteParser
+      if @child.class == TmlTokenParser::NoteParser ||
+         @child.class == TmlTokenParser::RestParser
         method, args = @child.parse
         @builder.send(method, args)
         return
@@ -56,6 +57,8 @@ module TmlTokenParser
         @builder.comment(" mensuration sign: #{@@mensurations[@token]} ")
       elsif @@divisions.has_key? @token
         @builder.comment(" #{@@divisions[@token]} in example ")
+      elsif @token =~ /^Lig/
+        @builder.LIGATURE("lig" => @token)
       else
         @builder.UNRECOGNIZED("XXX" => @token)
       end
