@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 module TmlTokenParser
-  class LigParser
+  class LigParser < GeneralParser
 
     def initialize(token)
       @token = token
@@ -9,20 +9,16 @@ module TmlTokenParser
     end
 
     def parse
+      args = {}
 
       err = catch :unrecognized do
         notes = num_notes
-
+        args['lig'] = @token
         nil
       end
 
       # unimplemented for now, output a placeholder
-      if err
-        $stderr.puts "got error #{err}: #{@token}"
-        return :UNRECOGNIZED, {"XXX" => @token}
-      else
-        return :LIGATURE, {'lig' => @token }
-      end
+      return err ? unrecognized(@token, err) : :LIGATURE, args
 
     end
 

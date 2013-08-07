@@ -4,6 +4,7 @@
 require './tml_token_parser/parser'
 
 # individual parsers
+require './tml_token_parser/general_parser'
 require './tml_token_parser/clef_parser'
 require './tml_token_parser/lig_parser'
 require './tml_token_parser/mensuration_parser'

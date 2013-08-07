@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 module TmlTokenParser
-  class RestParser
+  class RestParser < GeneralParser
 
     @@rests = {
       'MXP' => 'maxima',
@@ -26,12 +26,7 @@ module TmlTokenParser
         nil
       end
 
-      if err
-        $stderr.puts "caught error #{err}: #{@token}"
-        return :UNRECOGNIZED, {"XXX" => @token}
-      else
-        return :rest, args
-      end
+      return err ? unrecognized(@token, err) : :rest, args
 
     end
 

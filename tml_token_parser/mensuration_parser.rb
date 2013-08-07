@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 module TmlTokenParser
-  class MensurationParser
+  class MensurationParser < GeneralParser
 
     @@mensurations = {
       'O'  => 'O',
@@ -24,17 +24,11 @@ module TmlTokenParser
 
       err = catch :unrecognized do
         sign = do_mensuration
-
+        args = " mensuration sign: #{@token} "
         nil
       end
 
-      if err
-        $stderr.puts "caught error #{err}: #{@token}"
-        return :UNRECOGNIZED, {"XXX" => @token}
-      else
-        return :comment, " mensuration sign: #{@token} "
-      end
-
+      return err ? unrecognized(@token, err) : :comment, args
     end
 
     private

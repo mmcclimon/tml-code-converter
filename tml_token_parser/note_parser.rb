@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 module TmlTokenParser
-  class NoteParser
+  class NoteParser < GeneralParser
 
     @@notes = {
       'MX' => 'maxima',
@@ -38,13 +38,7 @@ module TmlTokenParser
         nil   # ensure block exits with nil if no error caught
       end
 
-      if err
-        $stderr.puts "caught error #{err}: #{@token}"
-        return :UNRECOGNIZED, {"XXX" => @token}
-      else
-        return :note, args
-      end
-
+      return err ? unrecognized(@token, err) : :note, args
     end
 
     private

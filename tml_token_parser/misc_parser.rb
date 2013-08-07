@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 module TmlTokenParser
-  class MiscParser
+  class MiscParser < GeneralParser
 
     @@dots = {
       'pt' => true,
@@ -26,12 +26,7 @@ module TmlTokenParser
         nil
       end
 
-      if err
-        $stderr.puts "caught error #{err}: #{@token}"
-        return :UNRECOGNIZED, {"XXX" => @token}
-      else
-        return sym, args
-      end
+      return err ? unrecognized(@token, err) : sym, args
 
     end
 
