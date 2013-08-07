@@ -26,10 +26,11 @@ module TmlTokenParser
                 when @token.match(/^[MLBSAF]/)
                   TmlTokenParser::NoteParser.new(@token)
                 else
+                  # MiscParser will also catch the unrecognized ones
                   TmlTokenParser::MiscParser.new(@token)
                 end
 
-      method, args = @child.parse
+      method, args = @child.parse.flatten
       @builder.send(method, args)
 
     end
