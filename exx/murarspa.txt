@@ -2,7 +2,7 @@
 
 [MX,L,L,L,MX,B,B,B,B,B,B,B,B,B,MX,B,B,B,B,B,B]
 
-[MX,L,L,MX,B,B,B,B,B,B,MX,B,B,B,B]
+[MX,LP,LP,MX,B,B,B,B,B,B,MX,B,B,B,B]
 
 [L,B,B,B,L,B,B]
 

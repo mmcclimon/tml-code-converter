@@ -4,7 +4,7 @@ require 'nokogiri'
 require './tml_code_tokenizer'
 require './tml_token_parser'
 
-file = File.open('exx/mur.txt', 'r')
+file = File.open('exx/murarspa.txt', 'r')
 
 builder = Nokogiri::XML::Builder.new do |xml|
   tokenizer = TmlCodeTokenizer.new(xml)
