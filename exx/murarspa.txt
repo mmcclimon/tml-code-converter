@@ -1,0 +1,87 @@
+[MX,L,B,S,M]
+
+[MX,L,L,L,MX,B,B,B,B,B,B,B,B,B,MX,B,B,B,B,B,B]
+
+[MX,L,L,MX,B,B,B,B,B,B,MX,B,B,B,B]
+
+[L,B,B,B,L,B,B]
+
+[B,S,S,S,B,S,S]
+
+[S,M,M,M,S,M,M]
+
+[MX,L,pt,L,MX MX,L,L,L,L MX,pt,L,L,L,L,MX]
+
+[L,L,B,B,S,S [L,B,S,M]]
+
+[L,B,B L,B,B,B L,B,pt,B,B,L B,S,S,B,S,S,S,B,S,pt,S,S,B S,M,M S,M,M,M S,M,pt,M,M,S,L]
+
+[L,B,L,Lig5cdsnodaad,pt,B,L B,S,B,S,S,S,S,B,pt,S,B S,M,S,M,M,M,M,S,pt,M,S,L]
+
+[S,M,S,M,pt,M,S,M,S S,M,M,M,pt,S,S,L]
+
+[B,M,pt,M,B,M,pt,M,B,L]
+
+[B,S,pt,M,M,B,pt,M,B,M,pt,L]
+
+[O,B,M,B,M,B,M,L C,B,M,M,pt,M,M,B,M,M,B,[M,M,B],M,M,L]
+
+[B,M,pt,M,B,M,pt,M,B,[L]]
+
+[B,M,M,pt,M,M,B]
+
+[B,S,pt,B,S,M,pt,M,M,M,B,[L]]
+
+[B,M,S,M,pt,M,B,S,M,pt,M,M,M,M,B,[L]]
+
+[L,M,pt,M,L,M,pt,M,M,L,M,pt,M,M,L,M,M,L]
+
+[L,S,pt,S,L,S,pt,L,S,S,pt,S,L]
+
+[L,B,pt,B,L,B,L,[B,L]]
+
+[L,S,L,B,pt,S,L,S,B,pt,S,L,B,pt,S,L,S]
+
+[MX,B,pt,B,MX,pt,B,MX,B,pt,MX,B,B]]
+
+[R3rvs,L,Lig3cdsndd,Lig3aacddx,R2rvs,L,Lig3cdsndd,Lig3aacddx]
+
+[L,Lig3cdsndd; Lv,Lig5vaaaa,Lv,Bv]
+
+[S,M,M,M,M,S,M,S,M,S,S,M,Lig2cdsnd; Sv,Mv,Sv,Mv,Sv,Sv,Sv,Lv; [S,Sv,Sv,Sv,S,Sv,Sv,L]]
+
+[L,Lig2cdsnd,B,Lig2od,L,[B,Lig2od]]
+
+[L,Lig3cdsndd,Lig4aaacddx,Lig3cdsndd,[B],Lig3aacddx]
+
+[Lig3aacddx,Lig4cdsnddd,Lig3cdsndd]
+
+[Lig2d,L,L,L,Bcsdx,Bcsdx,L,L,Lig2d,Lig2d]
+
+[Lig3aod,Lig3aa,Lig2cssnod,Lig3cssnaod,S,S,Lig4cdsnddod Lig2cssnod,Lig2a,Lig2cssnod,Lig2a,S,S,Lig2a,Lig2cdsnod]
+
+[Lig3cdsndod,Lig2cdsnod,Lig2cdsnd]
+
+[Lig4Laaod,Lig6Laaddod]
+
+[[Lig3aod],Lig4adod,Lig3ad,Lig4adod]
+
+[Lig2od,Lig3dod,Lig3dd,Lig4ddod]
+
+[Lig2cssna,Lig2cssnoa,Lig2cssnaa,Lig2cssnod,Lig3cssndod]
+
+[Lig2d,Lig3dd,[Lig3cdsndd]]
+
+[Lig2cdsnod,[Lig2od],Lig3cdsndod]
+
+[Lig2art,Lig2acddx]
+
+[Lig2a,[Lig3Laa,Lig3aa,Lig3Laoa,Lig3aoa,Lig3doa]]
+
+[Lig4ddd,[Lig4cdsnddacddx,Lig4cdsnddod]]
+
+[Lig4cssnddd,[Lig5cssndddod],Lig5cssnaaaod,[Lig5cssnaaad]]
+
+[O,Lig3cssnaod,pt,S,S,S,S,Lig4cdsnddod,pt,Lig2cssna,pt,Lig4cssnaodacddx; C,S,Lig2a,Lig2cssnod,Lig3cssnoda,pt,Lig4cdsnddod,pt,S,B,pt,Lig4cdsnddod,S,L]
+
+[M,S,M,pt,M,M,S,M,pt,M,M,M,M,M,M,S,M,S,M,pt,M,M,B,M,L; M,S,S,S,M,S,M,S,M,S,pt,Lig2cssnod,pt,S,pt,S,M,M,Lig2cssnod,Lig2cssnod,S,M,L]
