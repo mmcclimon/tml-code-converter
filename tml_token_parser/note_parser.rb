@@ -37,7 +37,8 @@ module TmlTokenParser
         nil   # ensure block exits with nil if no error caught
       end
 
-      return err ? unrecognized(@token, err) : :note, args
+      @builder.send(:note, args) unless err
+      unrecognized(@token, err) if err
     end
 
     private

@@ -3,7 +3,8 @@
 module TmlTokenParser
   class GeneralParser
 
-    def initialize(token)
+    def initialize(builder, token)
+      @builder = builder
       @token = token
     end
 
@@ -13,7 +14,7 @@ module TmlTokenParser
 
     def unrecognized(token, err_string='error')
       $stderr.puts "Caught error #{err_string}: #{token}"
-      return :UNRECOGNIZED, {"XXX" => token}
+      @builder.UNRECOGNIZED({"XXX" => token})
     end
 
   end

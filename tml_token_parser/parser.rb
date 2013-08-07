@@ -4,29 +4,25 @@ module TmlTokenParser
   class Parser
 
     def initialize(builder, token)
-      @builder = builder
       @child =  case
                 when token.match(/^Lig/)
-                  TmlTokenParser::LigParser.new(token)
+                  TmlTokenParser::LigParser.new(builder, token)
                 when token.match(/^Clef/)
-                  TmlTokenParser::ClefParser.new(token)
+                  TmlTokenParser::ClefParser.new(builder, token)
                 when token.match(/P/)    # only rests have a P
-                  TmlTokenParser::RestParser.new(token)
+                  TmlTokenParser::RestParser.new(builder, token)
                 when token.match(/^[OCRT]/)
-                  TmlTokenParser::MensurationParser.new(token)
+                  TmlTokenParser::MensurationParser.new(builder, token)
                 when token.match(/^[MLBSAF]/)
-                  TmlTokenParser::NoteParser.new(token)
+                  TmlTokenParser::NoteParser.new(builder, token)
                 else
                   # MiscParser will also catch the unrecognized ones
-                  TmlTokenParser::MiscParser.new(token)
+                  TmlTokenParser::MiscParser.new(builder, token)
                 end
     end
 
     def parse
-
-      method, args = @child.parse.flatten
-      @builder.send(method, args)
-
+      @child.parse
     end
 
   end

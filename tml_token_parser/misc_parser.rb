@@ -22,7 +22,8 @@ module TmlTokenParser
         nil
       end
 
-      return err ? unrecognized(@token, err) : sym, args
+      @builder.send(sym, args) unless err
+      unrecognized(@token, err) if err
 
     end
 

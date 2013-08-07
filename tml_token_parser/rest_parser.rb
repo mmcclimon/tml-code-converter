@@ -25,7 +25,8 @@ module TmlTokenParser
         nil
       end
 
-      return err ? unrecognized(@token, err) : :rest, args
+      @builder.send(:rest, args) unless err
+      unrecognized(@token, err) if err
 
     end
 

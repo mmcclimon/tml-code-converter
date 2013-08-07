@@ -13,7 +13,8 @@ module TmlTokenParser
       end
 
       # unimplemented for now, output a placeholder
-      return err ? unrecognized(@token, err) : :LIGATURE, args
+      @builder.send(:LIGATURE, args) unless err
+      unrecognized(@token, err) if err
 
     end
 
