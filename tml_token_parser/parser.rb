@@ -3,16 +3,6 @@
 module TmlTokenParser
   class Parser
 
-    @@notes = {
-      'MX' => 'maxima',
-      'L' => 'longa',
-      'B' => 'brevis',
-      'S' => 'semibrevis',
-      'M' => 'minima',
-      'SM' => 'semiminima',
-      'F' => 'fusa',
-    }
-
     @@dots = {
       'pt' => true,
     }
@@ -46,18 +36,21 @@ module TmlTokenParser
                   TmlTokenParser::ClefParser.new(@token)
                 when @token.match(/P/)    # only rests have a P
                   TmlTokenParser::RestParser.new(@token)
-                when @token.match(/[^OCRT]/)
+                when @token.match(/^[OCRT]/)
                   TmlTokenParser::MensurationParser.new(@token)
+                when @token.match(/^[MLBSAF]/)
+                  TmlTokenParser::NoteParser.new(@token)
                 else
                   TmlTokenParser::MiscParser.new(@token)
                 end
 
-      do_multiples()
-      do_capitals()
+      if @child.class == TmlTokenParser::NoteParser
+        method, args = @child.parse
+        @builder.send(method, args)
+        return
+      end
 
-      if @@notes.has_key? @token
-        @builder.note("dur" => @@notes[@token])
-      elsif @@dots.has_key? @token
+      if @@dots.has_key? @token
         @builder.dot("form" => "div")
       elsif @@mensurations.has_key? @token
         @builder.comment(" mensuration sign: #{@@mensurations[@token]} ")
