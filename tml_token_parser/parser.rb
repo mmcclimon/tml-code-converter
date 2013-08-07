@@ -12,12 +12,6 @@ module TmlTokenParser
       'C' => 'C',
     }
 
-    @@divisions = {
-      ' ' => "space",
-      '[' => "left square bracket",
-      ']' => "right square bracket",
-    }
-
     def initialize(builder, token)
       @builder = builder
       @token = token
@@ -45,18 +39,15 @@ module TmlTokenParser
                 end
 
       if @child.class == TmlTokenParser::NoteParser ||
-         @child.class == TmlTokenParser::RestParser
+         @child.class == TmlTokenParser::RestParser ||
+         @child.class == TmlTokenParser::MiscParser
         method, args = @child.parse
         @builder.send(method, args)
         return
       end
 
-      if @@dots.has_key? @token
-        @builder.dot("form" => "div")
-      elsif @@mensurations.has_key? @token
+      if @@mensurations.has_key? @token
         @builder.comment(" mensuration sign: #{@@mensurations[@token]} ")
-      elsif @@divisions.has_key? @token
-        @builder.comment(" #{@@divisions[@token]} in example ")
       elsif @token =~ /^Lig/
         @builder.LIGATURE("lig" => @token)
       else
