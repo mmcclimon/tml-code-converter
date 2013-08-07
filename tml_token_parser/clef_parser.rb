@@ -9,10 +9,6 @@ module TmlTokenParser
       'ClefG' => 'G clef',
     }
 
-    def initialize(token)
-      @token = token
-    end
-
     def parse
       args = {}
 

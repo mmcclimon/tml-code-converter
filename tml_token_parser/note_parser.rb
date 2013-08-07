@@ -22,10 +22,6 @@ module TmlTokenParser
       'sr' => 'semirubea',
     }
 
-    def initialize(token)
-      @token = token
-    end
-
     def parse
       args = {}   # the eventual arguments we'll send to the builder
 

@@ -14,10 +14,6 @@ module TmlTokenParser
       'FP'  => 'fusa',
     }
 
-    def initialize(token)
-      @token = token
-    end
-
     def parse
       args = {}
 

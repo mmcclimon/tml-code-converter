@@ -3,11 +3,6 @@
 module TmlTokenParser
   class LigParser < GeneralParser
 
-    def initialize(token)
-      @token = token
-
-    end
-
     def parse
       args = {}
 

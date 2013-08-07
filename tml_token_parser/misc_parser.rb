@@ -13,10 +13,6 @@ module TmlTokenParser
       ']' => "right square bracket",
     }
 
-    def initialize(token)
-      @token = token
-    end
-
     def parse
       sym = nil
       args = {}
