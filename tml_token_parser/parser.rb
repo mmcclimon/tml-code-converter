@@ -3,6 +3,8 @@
 module TmlTokenParser
   class Parser
 
+    attr_reader :next_token
+
     # Params:
     # *+builder+:: a <tt>Nokogiri::XML::Builder</tt> instance
     # *+tokens+:: a parsed set of tokens, returned by a +TmlCodeTokenizer+
@@ -10,13 +12,26 @@ module TmlTokenParser
       @builder = builder
       @tokens = tokens
       @current_index = 0
+      set_next_token()
     end
 
     def parse
       parse_next() until @current_index == @tokens.length
     end
 
+    def tokens_left?
+      @current_index < @tokens.length
+    end
+
     def parse_next
+      t = @next_token
+      set_next_token()
+      t.parse
+    end
+
+    private
+
+    def set_next_token
       token = @tokens[@current_index]
       @current_index += 1
 
@@ -36,7 +51,7 @@ module TmlTokenParser
                  TmlTokenParser::MiscParser.new(@builder, token)
                end
       child.set_parent(self)
-      child.parse
+      @next_token = child
     end
 
 
