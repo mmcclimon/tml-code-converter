@@ -17,12 +17,11 @@ builder = Nokogiri::XML::Builder.new do |xml|
       line.chomp!
       xml.comment(" #{line} ")
 
-      line.sub!(/^\[/, '').sub!(/\]$/, '')
-      tokens = line.split(/([, \[\]])/)
-      tokens.reject! { |t| t == ',' || t == '' }
+      tokens = tokenizer.tokenize(line)
+      parser = TmlTokenParser::Parser.new(xml, tokens)
 
       xml.example("n" => example_number) {
-        tokens.each { |t| tokenizer.parse_token(t) }
+        parser.parse()
       }
 
       example_number += 1
@@ -34,5 +33,3 @@ builder = Nokogiri::XML::Builder.new do |xml|
 end
 
 puts builder.to_xml
-
-

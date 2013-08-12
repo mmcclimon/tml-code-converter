@@ -8,6 +8,13 @@ module TmlTokenParser
       @token = token
     end
 
+    # sets +@parent+ to the <tt>TmlTokenParser::Parser</tt>
+    # instance that created it
+    def set_parent(parent)
+      @parent = parent
+    end
+
+
     # is overridden in subclasses
     def parse
     end
