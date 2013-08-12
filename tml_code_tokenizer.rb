@@ -13,8 +13,9 @@ class TmlCodeTokenizer
   # [Lig2d,L,L,L,Bcsdx,Bcsdx,L,L,Lig2d,Lig2d]
   def tokenize(str)
     str.sub!(/^\[/, '').sub!(/\]$/, '')  # strip leading/trailing bracket
-    tokens = str.split(/([;, \[\]])/)
+    tokens = str.split(/(; ?|,| |\[|\])/)
     tokens.reject! { |t| t == ',' || t == '' }
+    tokens.map! { |t| t == '; ' ? ';' : t }
 
     return tokens
   end
