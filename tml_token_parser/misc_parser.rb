@@ -11,6 +11,7 @@ module TmlTokenParser
       ' ' => "space",
       '[' => "left square bracket",
       ']' => "right square bracket",
+      ';' => "barline",
     }
 
     def parse
