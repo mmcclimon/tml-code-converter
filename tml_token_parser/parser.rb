@@ -16,11 +16,11 @@ module TmlTokenParser
     end
 
     def parse
-      parse_next() until @current_index == @tokens.length
+      parse_next() until @current_index > @tokens.length
     end
 
     def tokens_left?
-      @current_index < @tokens.length
+      @current_index <= @tokens.length
     end
 
     def parse_next
@@ -34,6 +34,7 @@ module TmlTokenParser
     def set_next_token
       token = @tokens[@current_index]
       @current_index += 1
+      return if token.nil?
 
       child =  case
                when token.match(/^Lig/)
