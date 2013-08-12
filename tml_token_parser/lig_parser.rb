@@ -5,16 +5,29 @@ module TmlTokenParser
 
     def parse
       args = {}
+      notes = Array.new
 
       err = catch :unrecognized do
-        notes = num_notes
+        num = num_notes
+        num.times do
+          notes << { :msg => 'note', :args => {} }
+        end
+
         args['lig'] = @token
         nil
       end
 
+      if err
+        unrecognized(@token, err)
+        return
+      end
+
       # unimplemented for now, output a placeholder
-      @builder.send(:LIGATURE, args) unless err
-      unrecognized(@token, err) if err
+      @builder.ligature (args) {
+        notes.each do |note|
+          @builder.send(note[:msg], note[:args])
+        end
+      }
 
     end
 
@@ -23,8 +36,7 @@ module TmlTokenParser
     def num_notes
       matches = @token.match(/^Lig(\d+)/)
       throw :unrecognized if matches.nil?
-
-      return matches[1]
+      return matches[1].to_i
     end
 
   end
