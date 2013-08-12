@@ -18,9 +18,10 @@ builder = Nokogiri::XML::Builder.new do |xml|
       xml.comment(" #{line} ")
 
       tokens = tokenizer.tokenize(line)
+      parser = TmlTokenParser::Parser.new(xml, tokens)
 
       xml.example("n" => example_number) {
-        tokens.each { |t| tokenizer.parse_token(t) }
+        parser.parse()
       }
 
       example_number += 1
