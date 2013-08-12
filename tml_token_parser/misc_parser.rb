@@ -46,6 +46,12 @@ module TmlTokenParser
         start_supplied()
         throw :no_output
 
+      when @token == ';'
+        return :barLine, {'rend' => 'single'}
+
+      when @token == ' '
+        return :barLine, {'rend' => 'invis'}
+
       when @@divisions.has_key?(@token)
         return :comment, "#{@@divisions[@token]} in example"
 
