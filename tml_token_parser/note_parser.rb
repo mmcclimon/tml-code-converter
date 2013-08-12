@@ -27,6 +27,7 @@ module TmlTokenParser
 
       err = catch(:unrecognized) do
         # XXX figure out what to do with duplex, triplex longs, etc
+        # XXX figure out what to do with tails
         mults = do_multiples
 
         args['dur'] = do_values
