@@ -15,12 +15,12 @@ builder = Nokogiri::XML::Builder.new do |xml|
     file.each_line do |line|
       next if line =~ /^\s*$/
       line.chomp!
-      xml.comment(" #{line} ")
 
       tokens = tokenizer.tokenize(line)
       parser = TmlTokenParser::Parser.new(xml, tokens)
 
       xml.example("n" => example_number) {
+        xml.comment(" #{line} ")
         parser.parse()
       }
 
