@@ -35,6 +35,7 @@ module TmlTokenParser
                  # MiscParser will also catch the unrecognized ones
                  TmlTokenParser::MiscParser.new(@builder, token)
                end
+      child.set_parent(self)
       child.parse
     end
 
