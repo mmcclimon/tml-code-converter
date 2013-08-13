@@ -3,5 +3,9 @@
 require 'sinatra'
 
 get '/' do
-  'TML code converter'
+  erb :index
+end
+
+get '/contact' do
+  erb :contact
 end

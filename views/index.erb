@@ -1,0 +1,22 @@
+<h1>TML Code Converter</h1>
+<p>This is an exploratory test to see if we can convert the <a href="http://chmtl.indiana.edu/tml">TML</a> codes for noteshapes into <a href="//music-encoding.org">MEI</a>. It doesn't work fully yet, but you can try here.</p>
+
+<hr />
+
+<form action="/convert" method="post">
+  <p>Paste in a string of TML code (including opening and closing brackets)
+    to see the resulting MEI encoding.</p>
+
+  <div class="row">
+    <div class="span4">
+      <textarea id="tmlCode" rows="5" class="span4"></textarea><br />
+      <button id="form_submit" type="submit" class="btn">Convert</button>
+    </div>
+    <div id="meiDisplay" class="span8">
+      <p>[MEI will be displayed here]</p>
+    </div>
+
+  </div>
+</form>
+
+<script src="/js/convert.js"></script>
