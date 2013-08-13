@@ -31,3 +31,9 @@ post '/convert' do
 
   builder.to_xml
 end
+
+# this is just so that a cron job can hit this site so that the heroku
+# dynos don't spin down after 30 minutes of inactivity
+get '/cron.txt' do
+  'ok'
+end
