@@ -13,8 +13,17 @@ class TmlCodeTokenizer
   # [Lig2d,L,L,L,Bcsdx,Bcsdx,L,L,Lig2d,Lig2d]
   def tokenize(str)
     str.sub!(/^\[/, '').sub!(/\]$/, '')  # strip leading/trailing bracket
-    tokens = str.split(/(; ?|,| |\[|\])/)
-    tokens.reject! { |t| t == ',' || t == '' }
+
+    # split into tokens
+    tokens = str.split(/(;\ ?|                  # semicolon, with optional space
+                         \ ?on\ staff\d\ ?|     # on staffX, optional spaces
+                         ,|                     # comma
+                         \ |                    # space alone
+                         \[|                    # left bracket [
+                         \]|                    # right bracket ]
+                         \n)                    # newline
+                       /x)
+    tokens.reject! { |t| t == ',' || t == '' || t == "\n" }
     tokens.map! { |t| t == '; ' ? ';' : t }
 
     return tokens
