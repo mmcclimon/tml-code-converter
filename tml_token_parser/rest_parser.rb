@@ -39,7 +39,7 @@ module TmlTokenParser
 
     def do_values
       matches = @token.match(/^([A-Z]+P)/)
-      throw unrecognized, 'no_match' if matches.nil?
+      throw :unrecognized, 'no_match' if matches.nil?
 
       if @@rests.has_key? matches[1]
         return @@rests[matches[1]]
