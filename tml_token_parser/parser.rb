@@ -45,7 +45,7 @@ module TmlTokenParser
                  TmlTokenParser::RestParser.new(@builder, token)
                when token.match(/^[OCRT]/)
                  TmlTokenParser::MensurationParser.new(@builder, token)
-               when token.match(/^[MLBSAF]/)
+               when token.match(/^[234]?[MLBSAF]/)
                  TmlTokenParser::NoteParser.new(@builder, token)
                else
                  # MiscParser will also catch the unrecognized ones

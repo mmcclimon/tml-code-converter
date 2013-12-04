@@ -22,15 +22,23 @@ module TmlTokenParser
       'sr' => 'semirubea',
     }
 
+    @@lengths = {
+      2 => 'duplex',
+      3 => 'triplex',
+      4 => 'quadruplex',
+    }
+
     def parse
       args = {}   # the eventual arguments we'll send to the builder
 
       err = catch(:unrecognized) do
-        # XXX figure out what to do with duplex, triplex longs, etc
         # XXX figure out what to do with tails
-        mults = do_multiples
-
+        mult = do_multiples
         args['dur'] = do_values
+
+        len = do_length(mult, args['dur'])
+        args['len'] = len if len
+
 
         color = do_coloration
         args['color'] = color if color
@@ -46,11 +54,11 @@ module TmlTokenParser
 
     def do_multiples
       matches = @token.match(/^([234])/)
-      return matches ? matches[1] : 1
+      return matches ? matches[1].to_i : 1
     end
 
     def do_values
-      matches = @token.match(/^([A-Z]+)/)
+      matches = @token.match(/^[234]?([A-Z]+)/)
       throw :unrecognized, 'no_match' if matches.nil?
 
       if @@notes.has_key? matches[1]
@@ -58,7 +66,19 @@ module TmlTokenParser
       else
         throw :unrecognized, 'no_key'
       end
+    end
 
+    # check to make sure multiples are on the right note duration
+    def do_length(num, dur)
+      len = nil
+      if 2 <= num && num <= 4
+        if dur == 'maxima' || dur == 'longa'
+          len = @@lengths[num]
+        else
+          throw :unrecognized, 'bad_length'
+        end
+      end
+      len
     end
 
     def do_coloration
