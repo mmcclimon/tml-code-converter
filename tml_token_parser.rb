@@ -9,6 +9,7 @@ require './tml_token_parser/clef_parser'
 require './tml_token_parser/lig_parser'
 require './tml_token_parser/mensuration_parser'
 require './tml_token_parser/misc_parser'
+require './tml_token_parser/values'
 require './tml_token_parser/note_parser'
 require './tml_token_parser/rest_parser'
 
