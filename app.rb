@@ -2,8 +2,8 @@
 
 require 'sinatra'
 require 'nokogiri'
-require './tml_code_tokenizer'
-require './tml_token_parser'
+require './lib/tml_code_tokenizer'
+require './lib/tml_token_parser'
 
 get '/' do
   erb :index
