@@ -18,7 +18,7 @@ get '/convert' do
 end
 
 post '/convert' do
-  line = params[:tml_code]
+  line = params[:tml_code].chomp
 
   builder = Nokogiri::XML::Builder.new do |xml|
     tokenizer = TmlCodeTokenizer.new(xml)
