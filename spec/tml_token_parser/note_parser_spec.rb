@@ -5,8 +5,6 @@ require 'tml_token_parser'
 
 describe TmlTokenParser::NoteParser do
 
-  let(:builder) { Nokogiri::XML::Builder.new { |xml| xml } }
-
   describe "#parse" do
     it "outputs a <note> element" do
       xml = parse("MX")

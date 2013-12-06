@@ -4,8 +4,6 @@ require 'tml_token_parser'
 
 describe TmlTokenParser::ClefParser do
 
-  let(:builder) { Nokogiri::XML::Builder.new { |xml| xml } }
-
   describe "#parse" do
     it "outputs a comment tag" do
       xml = parse("ClefC3")

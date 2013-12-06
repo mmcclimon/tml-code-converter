@@ -9,7 +9,6 @@ end
 
 describe TmlTokenParser::Values do
 
-  let(:builder) { Nokogiri::XML::Builder.new { |xml| xml } }
   let(:dummy) { Dummy.new }
 
   describe "do_multiples" do

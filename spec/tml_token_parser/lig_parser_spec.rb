@@ -5,8 +5,6 @@ require 'tml_token_parser'
 
 describe TmlTokenParser::LigParser do
 
-  let(:builder) { Nokogiri::XML::Builder.new { |xml| xml } }
-
   describe "#parse" do
     it "outputs a ligature tag" do
       xml = parse("Lig4cssnod")

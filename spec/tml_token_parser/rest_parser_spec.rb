@@ -5,8 +5,6 @@ require 'tml_token_parser'
 
 describe TmlTokenParser::RestParser do
 
-  let(:builder) { Nokogiri::XML::Builder.new { |xml| xml } }
-
   describe "#parse" do
     it "outputs a <rest> element" do
       xml = parse("MXP")
