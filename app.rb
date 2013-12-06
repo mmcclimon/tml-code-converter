@@ -14,6 +14,7 @@ get '/contact' do
 end
 
 get '/convert' do
+  status 403
   "You must access this page via the form on the front page"
 end
 
