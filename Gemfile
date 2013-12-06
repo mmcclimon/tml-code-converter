@@ -7,6 +7,7 @@ ruby '2.0.0'
 gem 'sinatra', '>=1.3.0'
 gem 'nokogiri'
 gem 'rspec'
+gem 'rack-test'
 
 group :development do
   gem 'shotgun'
