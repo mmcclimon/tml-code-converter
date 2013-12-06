@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'nokogiri'
+require 'tml_token_parser'
 
 def get_builder
   Nokogiri::XML::Builder.new { |xml| xml }
@@ -22,6 +23,18 @@ def parse(token)
     p.parse()
   }
   builder
+end
+
+# Used when needing to test nesting elements. Depens on TmlTokenParser::Parser
+def parse_multiple(tokens)
+  builder = get_builder()
+  p = TmlTokenParser::Parser.new(builder, tokens)
+
+  builder.root {
+    p.parse()
+  }
+  builder
+
 end
 
 def xpath(builder, query)
