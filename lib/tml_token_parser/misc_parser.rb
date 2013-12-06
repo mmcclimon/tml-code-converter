@@ -3,9 +3,6 @@
 module TmlTokenParser
   class MiscParser < GeneralParser
 
-    # a bit kludgy, but this is the best I can come up with for now
-    @@in_supplied = false
-
     @@dots = {
       'pt' => true,
     }
@@ -19,14 +16,15 @@ module TmlTokenParser
       sym = nil
       args = {}
 
-      skip_output = catch :no_output do
+      err = catch :unrecognized do
         sym, args = do_misc
         nil
       end
 
-      return if skip_output || sym.nil?
-      @builder.send(sym, args)
-
+      # sym might be nil (if there's no output for this element); if it is,
+      # we don't want to send any output
+      @builder.send(sym, args) unless err || sym.nil?
+      unrecognized(@token, err) if err
     end
 
     private
@@ -37,14 +35,14 @@ module TmlTokenParser
       when @@dots.has_key?(@token)
         return :dot, {'form' => 'div'}
 
-      when @token == ']'
-        @@in_supplied = false
-        throw :no_output
-
       when @token == '['
-        @@in_supplied = true
-        start_supplied()
-        throw :no_output
+        @builder.supplied {
+          @parent.parse_next() until @parent.next_token.token_string == ']'
+        }
+        return nil
+
+      when @token == ']'    # necessary so trailing bracket isn't output
+        return nil
 
       when @token == ';'
         return :barLine, {'rend' => 'single'}
@@ -56,18 +54,10 @@ module TmlTokenParser
         return :comment, "#{@@divisions[@token]} in example"
 
       else
-        unrecognized(@token, 'no_key')
-        throw :no_output
+        throw :unrecognized, 'no_key'
       end
+
     end
-
-    def start_supplied
-      @builder.supplied {
-        @parent.parse_next until @@in_supplied == false
-      }
-    end
-
-
 
   end
 end

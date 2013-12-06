@@ -14,6 +14,9 @@ module TmlTokenParser
       @parent = parent
     end
 
+    def token_string
+      @token
+    end
 
     # is overridden in subclasses
     def parse
