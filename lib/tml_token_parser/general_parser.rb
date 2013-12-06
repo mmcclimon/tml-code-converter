@@ -14,13 +14,16 @@ module TmlTokenParser
       @parent = parent
     end
 
+    def token_string
+      @token
+    end
 
     # is overridden in subclasses
     def parse
     end
 
     def unrecognized(token, err_string='error')
-      $stderr.puts "Caught error #{err_string}: #{token}"
+      $stderr.puts "Caught error #{err_string}: #{token}" if ENV["DEBUG"]
       @builder.UNRECOGNIZED({"XXX" => token})
     end
 

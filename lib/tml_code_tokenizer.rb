@@ -9,11 +9,10 @@ class TmlCodeTokenizer
     @builder = xml_builder
   end
 
-  # param +str+ is a TML code string in square brackets, e.g.
+  # param +str+ is a TML code string with optional square brackets, e.g.
   # [Lig2d,L,L,L,Bcsdx,Bcsdx,L,L,Lig2d,Lig2d]
   def tokenize(str)
-    str.sub!(/^\[/, '').sub!(/\]$/, '')  # strip leading/trailing bracket
-
+    str = prepare_string(str)
     # split into tokens
     tokens = str.split(/(;\ ?|                  # semicolon, with optional space
                          \ ?on\ staff\d\ ?|     # on staffX, optional spaces
@@ -29,8 +28,12 @@ class TmlCodeTokenizer
     return tokens
   end
 
-  def parse_token(token)
-    parser = TmlTokenParser::Parser.new(@builder, token)
-    parser.parse
+  private
+
+  # strip spaces, along with matching leading/trailing square brackets
+  def prepare_string(str)
+    str = str.strip
+    str = str[1..-2] if str[0] == '[' && str[-1] == ']'
+    str
   end
 end

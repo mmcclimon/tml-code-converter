@@ -20,7 +20,7 @@ module TmlTokenParser
       end
 
       @builder.send(:comment, args) unless err
-      unrecognized(@token, array) if err
+      unrecognized(@token, err) if err
     end
 
     private

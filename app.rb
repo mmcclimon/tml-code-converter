@@ -2,8 +2,8 @@
 
 require 'sinatra'
 require 'nokogiri'
-require './tml_code_tokenizer'
-require './tml_token_parser'
+require './lib/tml_code_tokenizer'
+require './lib/tml_token_parser'
 
 get '/' do
   erb :index
@@ -18,7 +18,7 @@ get '/convert' do
 end
 
 post '/convert' do
-  line = params[:tml_code]
+  line = params[:tml_code].chomp
 
   builder = Nokogiri::XML::Builder.new do |xml|
     tokenizer = TmlCodeTokenizer.new(xml)

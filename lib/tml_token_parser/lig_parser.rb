@@ -35,7 +35,7 @@ module TmlTokenParser
 
     def num_notes
       matches = @token.match(/^Lig(\d+)/)
-      throw :unrecognized if matches.nil?
+      throw :unrecognized, 'no_match' if matches.nil?
       return matches[1].to_i
     end
 
