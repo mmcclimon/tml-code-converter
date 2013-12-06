@@ -78,16 +78,26 @@ describe "app" do
       }.not_to raise_error
     end
 
-    it "has <example> as root element" do
-      res = find_xpath(last_response, '/example')
+    it "wraps contents in <section><staff><layer> tags" do
+      res = find_xpath(last_response, '/section/staff/layer')
       expect(res).to have(1).items
     end
 
     it "contains a comment with the original token" do
-      res = find_xpath(last_response, 'string(/example/comment())')
+      res = find_xpath(last_response, 'string(//comment())')
       expect(res.strip).to be == '[B]'
-
     end
+
+    # ensure that the output still has the right structure
+    # <section><staff><layer>, even if the example itself contains
+    # <staff> elements
+    context "nested staffs" do
+      it "rearranges <staff> tags with nested staffs" do
+        post '/convert', { :tml_code => '[C,L,B,B]' }
+        res = find_xpath(last_response, '/section/staff/layer')
+      end
+    end
+
   end
 
 end
