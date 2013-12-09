@@ -20,11 +20,12 @@ end
 
 post '/convert' do
   line = params[:tml_code].chomp
+  mei_ns = 'http://www.music-encoding.org/ns/mei'
 
   builder = Nokogiri::XML::Builder.new do |xml|
     tokenizer = TmlCodeTokenizer.new(xml)
     parser = TmlTokenParser::Parser.new(xml, tokenizer.tokenize(line))
-    xml.section {
+    xml.section('xmlns' => mei_ns) {
       xml.staff {
         xml.layer {
           xml.comment(" #{line} ")

@@ -9,9 +9,14 @@ def find_css(resp, selector)
   doc.css(selector)
 end
 
-def find_xpath(resp, selector)
+def find_xpath(resp, selector, ns=nil)
   doc = Nokogiri::XML(resp.body)
-  doc.xpath(selector)
+  if ns
+    doc.xpath(selector, ns)
+  else
+    doc.remove_namespaces!
+    doc.xpath(selector)
+  end
 end
 
 
@@ -83,6 +88,12 @@ describe "app" do
       expect(res).to have(1).items
     end
 
+    it "has the MEI namespace on the <section> tag" do
+      mei_ns = 'http://www.music-encoding.org/ns/mei'
+      res = find_xpath(last_response, '/mei:section', 'mei' => mei_ns)
+      expect(res).to have(1).items
+    end
+
     it "contains a comment with the original token" do
       res = find_xpath(last_response, 'string(//comment())')
       expect(res.strip).to be == '[B]'
@@ -92,9 +103,17 @@ describe "app" do
     # <section><staff><layer>, even if the example itself contains
     # <staff> elements
     context "nested staffs" do
+      before(:each) { post '/convert', {:tml_code => '[C,L,B,B]'} }
+
       it "rearranges <staff> tags with nested staffs" do
-        post '/convert', { :tml_code => '[C,L,B,B]' }
         res = find_xpath(last_response, '/section/staff/layer')
+        expect(res).to have(1).items
+      end
+
+      it "keeps the MEI namespace on the <section> tag" do
+        mei_ns = 'http://www.music-encoding.org/ns/mei'
+        res = find_xpath(last_response, '/mei:section', 'mei' => mei_ns)
+        expect(res).to have(1).items
       end
     end
 
