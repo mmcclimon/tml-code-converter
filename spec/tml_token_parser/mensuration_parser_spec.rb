@@ -50,6 +50,57 @@ describe TmlTokenParser::MensurationParser do
       end
     end
 
+    context 'semicircles' do
+      let(:sign_xpath) { 'string(//staffDef/@mensur.sign)' }
+      let(:orient_xpath) { 'string(//staffDef/@mensur.orient)' }
+
+      it "sets a 'mensur.orient = reversed' attribute for 'CL'" do
+        xml = parse("CL")
+        expect(xpath(xml, sign_xpath)).to be == 'C'
+        expect(xpath(xml, orient_xpath)).to be == 'reversed'
+      end
+
+      it "sets a 'mensur.orient = CW' attribute for 'CB'" do
+        xml = parse("CB")
+        expect(xpath(xml, sign_xpath)).to be == 'C'
+        expect(xpath(xml, orient_xpath)).to be == '90CW'
+      end
+
+      it "sets a 'mensur.orient = CCW' attribute for 'CT'" do
+        xml = parse("CT")
+        expect(xpath(xml, sign_xpath)).to be == 'C'
+        expect(xpath(xml, orient_xpath)).to be == '90CCW'
+      end
+
+      it "doesn't set a 'mensur.orient' attribute for 'C'" do
+        xml = parse("C")
+        expect(xpath(xml, sign_xpath)).to be == 'C'
+        expect(xpath(xml, '//staffDef/@mensur.orient')).to have(0).items
+      end
+    end
+
+    context 'post-symbol information' do
+
+      it "sets a 'mensur.slash = 1' for 'dim' in token" do
+        xml = parse("Cdim")
+        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'C'
+        expect(xpath(xml, 'string(//staffDef/@mensur.slash)')).to be == '1'
+
+        xml = parse("CLdim")
+        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'C'
+        expect(xpath(xml, 'string(//staffDef/@mensur.slash)')).to be == '1'
+
+        xml = parse("Rdim")
+        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'R'
+        expect(xpath(xml, 'string(//staffDef/@mensur.slash)')).to be == '1'
+
+        xml = parse("TRdim")
+        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'TR'
+        expect(xpath(xml, 'string(//staffDef/@mensur.slash)')).to be == '1'
+      end
+
+    end
+
     # The mensuration parser needs to deal appropriately with nested elements,
     # telling its parent to keep parsing until it finishes or there is another
     # mensuration sign.

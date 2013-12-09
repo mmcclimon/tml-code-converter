@@ -21,8 +21,16 @@ module TmlTokenParser
 
       err = catch :unrecognized do
         sign = do_mensuration
-        args['mensur.sign'] = sign
-        xml_id = "staff_mens_#{sign}"
+
+        # MEI handles the semicircles with an 'orient' attribute, do those here
+        if sign.match(/C[LTB]/)
+          args['mensur.sign'] = 'C'
+          args['mensur.orient'] = do_orientation(sign)
+        else
+          args['mensur.sign'] = sign
+        end
+
+        xml_id = "staff_mens_#{@token}"
         args['xml:id'] = xml_id
         nil
       end
