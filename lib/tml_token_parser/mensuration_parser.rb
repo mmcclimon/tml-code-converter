@@ -21,6 +21,7 @@ module TmlTokenParser
 
       err = catch :unrecognized do
         sign = do_mensuration
+        do_post!(args)
 
         # MEI handles the semicircles with an 'orient' attribute, do those here
         if sign.match(/C[LTB]/)
@@ -63,6 +64,28 @@ module TmlTokenParser
         return matches[1]
       else
         throw :unrecognized, "no_key"
+      end
+    end
+
+    # NB: this modifies args in place to avoid a bunch of ifs in the main
+    # parse() body. It's not complete yet.
+    def do_post!(args)
+      match = @token.match(/^[A-Z]+                         # handled by sign
+                             (?<marks>d|rvd|rvs|rhdx|rhsn)?   # internal marks
+                             (?<dim>dim)?                     # line of diminution
+                             (?<nums>\d+)?$/x)                # trailing numbers
+      return nil if match.nil?
+
+      args['mensur.slash'] = 1 if match[:dim]
+      args['mensur.dot'] = 'true' if match[:marks] == 'd'
+      args
+    end
+
+    def do_orientation(sign)
+      case sign
+        when 'CL' then 'reversed'
+        when 'CT' then '90CCW'
+        when 'CB' then '90CW'
       end
     end
 

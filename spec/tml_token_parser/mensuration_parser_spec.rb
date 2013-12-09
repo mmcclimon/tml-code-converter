@@ -99,6 +99,19 @@ describe TmlTokenParser::MensurationParser do
         expect(xpath(xml, 'string(//staffDef/@mensur.slash)')).to be == '1'
       end
 
+      it "includes 'mensur.dot' if 'd' in token" do
+        xml = parse('Cd')
+        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'C'
+        expect(xpath(xml, 'string(//staffDef/@mensur.dot)')).to be == 'true'
+      end
+
+      it "includes both 'mensur.dot' and 'mensur.slash' when necessary" do
+        xml = parse('Cddim')
+        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'C'
+        expect(xpath(xml, 'string(//staffDef/@mensur.dot)')).to be == 'true'
+        expect(xpath(xml, 'string(//staffDef/@mensur.slash)')).to be == '1'
+      end
+
     end
 
     # The mensuration parser needs to deal appropriately with nested elements,
