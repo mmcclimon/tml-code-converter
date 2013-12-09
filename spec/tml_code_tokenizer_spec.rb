@@ -23,9 +23,9 @@ describe TmlCodeTokenizer do
     end
 
     context "token validity" do
-      it "tokenizes semicolons" do
+      it "tokenizes semicolons, with optional space" do
         expect(t('L;B')).to include(';')
-        expect(t('L; B')).to include(';')
+        expect(t('L; B')).to include('; ')
       end
 
       it "tokenizes 'on staffN'" do

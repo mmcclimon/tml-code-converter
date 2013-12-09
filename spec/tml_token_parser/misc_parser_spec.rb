@@ -15,6 +15,13 @@ describe TmlTokenParser::MiscParser do
       expect(xpath(xml, '//barLine[@rend="single"]')).to have(1).items
     end
 
+    # semicolon with space is an error in the TML code, so put out a comment
+    # so we can fix it
+    it "outputs a warning comment for '; '" do
+      xml = parse("; ")
+      expect(xpath(xml, 'string(//comment())')).to match(/warning.*semicolon/i)
+    end
+
     it "outputs <barLine rend='invis'> for ' '" do
       xml = parse(" ")
       expect(xpath(xml, '//barLine[@rend="invis"]')).to have(1).items

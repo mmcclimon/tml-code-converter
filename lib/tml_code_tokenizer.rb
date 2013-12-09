@@ -23,8 +23,6 @@ class TmlCodeTokenizer
                          \n)                    # newline
                        /x)
     tokens.reject! { |t| t == ',' || t == '' || t == "\n" }
-    tokens.map! { |t| t == '; ' ? ';' : t }
-
     return tokens
   end
 

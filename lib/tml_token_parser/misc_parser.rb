@@ -7,23 +7,17 @@ module TmlTokenParser
       'pt' => true,
     }
 
-    @@divisions = {
-      ' ' => "space",
-      ';' => "barline",
-    }
-
     def parse
       sym = nil
       args = {}
 
       err = catch :unrecognized do
-        sym, args = do_misc
+        do_misc()
         nil
       end
 
       # sym might be nil (if there's no output for this element); if it is,
       # we don't want to send any output
-      @builder.send(sym, args) unless err || sym.nil?
       unrecognized(@token, err) if err
     end
 
@@ -33,7 +27,7 @@ module TmlTokenParser
     def do_misc
       case
       when @@dots.has_key?(@token)
-        return :dot, {'form' => 'div'}
+        @builder.send(:dot, {'form' => 'div'})
 
       when @token == '['
         @builder.supplied {
@@ -45,13 +39,14 @@ module TmlTokenParser
         return nil
 
       when @token == ';'
-        return :barLine, {'rend' => 'single'}
+        @builder.send(:barLine, {'rend' => 'single'})
+
+      when @token == '; '
+        @builder.send(:comment, " Warning: semicolon with space in example ")
+        @builder.send(:barLine, {'rend' => 'single'})
 
       when @token == ' '
-        return :barLine, {'rend' => 'invis'}
-
-      when @@divisions.has_key?(@token)
-        return :comment, "#{@@divisions[@token]} in example"
+        @builder.send(:barLine, {'rend' => 'invis'})
 
       else
         throw :unrecognized, 'no_key'
