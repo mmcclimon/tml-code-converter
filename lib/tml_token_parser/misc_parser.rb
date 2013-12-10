@@ -48,6 +48,9 @@ module TmlTokenParser
       when @token == ' '
         @builder.send(:barLine, {'rend' => 'invis'})
 
+      when @token.match(/\s*on staff(\d)/)
+        @builder.comment(" on #{$1}-line staff ")
+
       else
         throw :unrecognized, 'no_key'
       end
