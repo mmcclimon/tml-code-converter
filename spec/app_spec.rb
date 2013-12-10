@@ -25,6 +25,8 @@ describe "app" do
   include Rack::Test::Methods
   def app() Sinatra::Application end
 
+  let(:mei_ns) { 'http://www.music-encoding.org/ns/mei' }
+
 
   describe "GET /" do
     before(:all) { get '/' }
@@ -84,13 +86,13 @@ describe "app" do
     end
 
     it "wraps contents in <section><staff><layer> tags" do
-      res = find_xpath(last_response, '/section/staff/layer')
+      res = find_xpath(last_response, '/mei:section/mei:staff/mei:layer',
+                       {:mei => mei_ns})
       expect(res).to have(1).items
     end
 
     it "has the MEI namespace on the <section> tag" do
-      mei_ns = 'http://www.music-encoding.org/ns/mei'
-      res = find_xpath(last_response, '/mei:section', 'mei' => mei_ns)
+      res = find_xpath(last_response, '/mei:section', {:mei => mei_ns})
       expect(res).to have(1).items
     end
 
@@ -106,8 +108,15 @@ describe "app" do
       before(:each) { post '/convert', {:tml_code => '[C,L,B,B]'} }
 
       it "rearranges <staff> tags with nested staffs" do
-        res = find_xpath(last_response, '/section/staff/layer')
+        res = find_xpath(last_response, '/mei:section/mei:staff/mei:layer',
+                         {:mei => mei_ns})
         expect(res).to have(1).items
+      end
+
+      it "doesn't add extraneous staffs" do
+        res = find_xpath(last_response, '/mei:section/mei:staff/mei:layer/mei:staff',
+                         {:mei => mei_ns})
+        expect(res).to have(0).items
       end
 
       it "keeps the MEI namespace on the <section> tag" do

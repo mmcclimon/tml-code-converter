@@ -5,6 +5,8 @@ require 'nokogiri'
 require './lib/tml_code_tokenizer'
 require './lib/tml_token_parser'
 
+MEI_NS = 'http://www.music-encoding.org/ns/mei'
+
 get '/' do
   erb :index
 end
@@ -20,12 +22,11 @@ end
 
 post '/convert' do
   line = params[:tml_code].chomp
-  mei_ns = 'http://www.music-encoding.org/ns/mei'
 
   builder = Nokogiri::XML::Builder.new do |xml|
     tokenizer = TmlCodeTokenizer.new(xml)
     parser = TmlTokenParser::Parser.new(xml, tokenizer.tokenize(line))
-    xml.section('xmlns' => mei_ns) {
+    xml.section('xmlns' => MEI_NS) {
       xml.staff {
         xml.layer {
           xml.comment(" #{line} ")
@@ -52,17 +53,19 @@ def ensure_well_formed_staffs(builder)
   doc = Nokogiri::XML(builder.to_xml) { |config| config.default_xml.noblanks }
 
   # check to see if we need to rearrange, return now if we don't
-  staff = doc.at_xpath('/section/staff/layer/staff')
+  staff = doc.at_xpath('/mei:section/mei:staff/mei:layer/mei:staff',
+                       {:mei => MEI_NS})
   return doc unless staff
 
   # take the layer element and turn it into a section element, which becomes
   # the new document root
-  layer = doc.at_xpath('/section/staff/layer')
+  layer = doc.at_xpath('/mei:section/mei:staff/mei:layer', {:mei => MEI_NS})
   layer.name = 'section'
   doc.root = layer
+  doc.root.add_namespace_definition(nil, MEI_NS)
 
   # wrap the contents of <staff> in <layer> tags
-  staffs = doc.xpath('/section/staff')
+  staffs = doc.xpath('/mei:section/mei:staff', {:mei => MEI_NS})
   staffs.each do |s|
     new_layer = Nokogiri::XML::Node.new('layer', doc)
     s.children.each { |c| c.parent = new_layer }
