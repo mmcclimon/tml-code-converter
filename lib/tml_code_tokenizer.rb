@@ -4,14 +4,9 @@
 # to do all of the hard work
 class TmlCodeTokenizer
 
-  # gets a Nokogiri::XML::Builder object
-  def initialize(xml_builder)
-    @builder = xml_builder
-  end
-
   # param +str+ is a TML code string with optional square brackets, e.g.
   # [Lig2d,L,L,L,Bcsdx,Bcsdx,L,L,Lig2d,Lig2d]
-  def tokenize(str)
+  def self.tokenize(str)
     str = prepare_string(str)
     # split into tokens
     tokens = str.split(/(;\ ?|                  # semicolon, with optional space
@@ -29,7 +24,7 @@ class TmlCodeTokenizer
   private
 
   # strip spaces, along with matching leading/trailing square brackets
-  def prepare_string(str)
+  def self.prepare_string(str)
     str = str.strip
     str = str[1..-2] if str[0] == '[' && str[-1] == ']'
     str
