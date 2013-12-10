@@ -31,8 +31,7 @@ module TmlTokenParser
           args['mensur.sign'] = sign
         end
 
-        xml_id = "staff_mens_#{@token}"
-        args['xml:id'] = xml_id
+        args['label'] = @token
         nil
       end
 
@@ -41,16 +40,7 @@ module TmlTokenParser
         return
       end
 
-      @builder.staffDef(args)
-
-      # open a staff element, continue parsing until we're out of tokens
-      # or the next token is another mensuration sign
-      @builder.staff ({'def' => "##{xml_id}"}) {
-        until @parent.tokens_left? == false ||
-            @parent.next_token.class == TmlTokenParser::MensurationParser
-          @parent.parse_next
-        end
-      }
+      @builder.mensur(args)
 
     end
 

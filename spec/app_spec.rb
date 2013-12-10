@@ -126,37 +126,5 @@ describe "app" do
       end
     end
 
-    context "duplicate <staffDef> elements" do
-
-      it "removes duplicate <staffDef> elements" do
-        post '/convert', {:tml_code => '[C,L,B,O,L,C,L,B]'}
-        res = find_xpath(last_response, '//mei:staffDef[@mensur.sign="C"]',
-                         {:mei => mei_ns})
-        expect(res).to have(1).items
-      end
-
-      it "moves all <staffDef> elements to top of section" do
-        post '/convert', {:tml_code => '[C,L,B,O,L,C,L,B]'}
-
-        # there should be exactly two staffDef elements, and they should be
-        # right next to one another, and right after the first comment node
-        doc = Nokogiri::XML(last_response.body) { |config| config.default_xml.noblanks }
-        comment = doc.root.children.first      # the comment
-
-        s1 = comment.next
-        expect(s1).to be_instance_of(Nokogiri::XML::Element)
-        expect(s1.name).to be == 'staffDef'
-
-        s2 = s1.next
-        expect(s2).to be_instance_of(Nokogiri::XML::Element)
-        expect(s2.name).to be == 'staffDef'
-
-        # whatever's next shouldn't be a staffDef
-        expect(s2.next.name).not_to be == 'staffDef'
-      end
-
-    end
-
   end
-
 end

@@ -21,38 +21,29 @@ describe TmlTokenParser::MensurationParser do
       expect(xpath(parse('GDB'), '//UNRECOGNIZED')).to have(1).items
     end
 
-    context '<staffDef>'  do
-      it "outputs a <staffDef> element" do
-        xml = parse("C")
-        expect(xpath(xml, '//staffDef')).to have(1).items
-      end
-
-      it "outputs token as attribute 'mensur.sign'" do
-        xml = parse("C")
-        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'C'
-      end
-
-      it "outputs an xml:id of 'staff_mens_[token]'" do
-        xml = parse("C")
-        expect(xpath(xml, 'string(//staffDef/@xml:id)')).to be == 'staff_mens_C'
-      end
+    it "outputs a <mensur> element" do
+      xml = parse("C")
+      expect(xpath(xml, '//mensur')).to have(1).items
     end
 
-    context '<staff>' do
-      it "outputs a <staff> element" do
-        xml = parse("C")
-        expect(xpath(xml, '//staff')).to have(1).items
-      end
+    it "outputs token as attribute 'mensur.sign'" do
+      xml = parse("C")
+      expect(xpath(xml, 'string(//mensur/@mensur.sign)')).to be == 'C'
+    end
 
-      it "outputs the id of the staffDef as a 'def' attribute" do
-        xml = parse("C")
-        expect(xpath(xml, 'string(//staff/@def)')).to be == '#staff_mens_C'
-      end
+    it "outputs an label of '[token]'" do
+      xml = parse("CL")
+      expect(xpath(xml, 'string(//mensur/@label)')).to be == 'CL'
+    end
+
+    it "outputs multiple staffDef/staff pairs with multiple mensurations" do
+      xml = parse_multiple(['C', 'L', 'B', 'O', 'L'])
+      expect(xpath(xml, '//mensur')).to have(2).items
     end
 
     context 'semicircles' do
-      let(:sign_xpath) { 'string(//staffDef/@mensur.sign)' }
-      let(:orient_xpath) { 'string(//staffDef/@mensur.orient)' }
+      let(:sign_xpath) { 'string(//mensur/@mensur.sign)' }
+      let(:orient_xpath) { 'string(//mensur/@mensur.orient)' }
 
       it "sets a 'mensur.orient = reversed' attribute for 'CL'" do
         xml = parse("CL")
@@ -83,56 +74,33 @@ describe TmlTokenParser::MensurationParser do
 
       it "sets a 'mensur.slash = 1' for 'dim' in token" do
         xml = parse("Cdim")
-        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'C'
-        expect(xpath(xml, 'string(//staffDef/@mensur.slash)')).to be == '1'
+        expect(xpath(xml, 'string(//mensur/@mensur.sign)')).to be == 'C'
+        expect(xpath(xml, 'string(//mensur/@mensur.slash)')).to be == '1'
 
         xml = parse("CLdim")
-        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'C'
-        expect(xpath(xml, 'string(//staffDef/@mensur.slash)')).to be == '1'
+        expect(xpath(xml, 'string(//mensur/@mensur.sign)')).to be == 'C'
+        expect(xpath(xml, 'string(//mensur/@mensur.slash)')).to be == '1'
 
         xml = parse("Rdim")
-        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'R'
-        expect(xpath(xml, 'string(//staffDef/@mensur.slash)')).to be == '1'
+        expect(xpath(xml, 'string(//mensur/@mensur.sign)')).to be == 'R'
+        expect(xpath(xml, 'string(//mensur/@mensur.slash)')).to be == '1'
 
         xml = parse("TRdim")
-        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'TR'
-        expect(xpath(xml, 'string(//staffDef/@mensur.slash)')).to be == '1'
+        expect(xpath(xml, 'string(//mensur/@mensur.sign)')).to be == 'TR'
+        expect(xpath(xml, 'string(//mensur/@mensur.slash)')).to be == '1'
       end
 
       it "includes 'mensur.dot' if 'd' in token" do
         xml = parse('Cd')
-        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'C'
-        expect(xpath(xml, 'string(//staffDef/@mensur.dot)')).to be == 'true'
+        expect(xpath(xml, 'string(//mensur/@mensur.sign)')).to be == 'C'
+        expect(xpath(xml, 'string(//mensur/@mensur.dot)')).to be == 'true'
       end
 
       it "includes both 'mensur.dot' and 'mensur.slash' when necessary" do
         xml = parse('Cddim')
-        expect(xpath(xml, 'string(//staffDef/@mensur.sign)')).to be == 'C'
-        expect(xpath(xml, 'string(//staffDef/@mensur.dot)')).to be == 'true'
-        expect(xpath(xml, 'string(//staffDef/@mensur.slash)')).to be == '1'
-      end
-
-    end
-
-    # The mensuration parser needs to deal appropriately with nested elements,
-    # telling its parent to keep parsing until it finishes or there is another
-    # mensuration sign.
-    context 'with nested elements' do
-      it "continues parsing until there are no more tokens" do
-        xml = parse_multiple(['C', 'L'])
-        expect(xpath(xml, '//staff/note')).to have(1).items
-      end
-
-      it "outputs multiple staffDef/staff pairs with multiple mensurations" do
-        xml = parse_multiple(['C', 'L', 'B', 'O', 'L'])
-        expect(xpath(xml, '//staffDef')).to have(2).items
-        expect(xpath(xml, '//staff')).to have(2).items
-      end
-
-      it "nests elements appropriately with multiple mensurations" do
-        xml = parse_multiple(['C', 'L', 'B', 'O', 'L'])
-        expect(xpath(xml, '//staff[@def="#staff_mens_C"]/note')).to have(2).items
-        expect(xpath(xml, '//staff[@def="#staff_mens_O"]/note')).to have(1).items
+        expect(xpath(xml, 'string(//mensur/@mensur.sign)')).to be == 'C'
+        expect(xpath(xml, 'string(//mensur/@mensur.dot)')).to be == 'true'
+        expect(xpath(xml, 'string(//mensur/@mensur.slash)')).to be == '1'
       end
 
     end
