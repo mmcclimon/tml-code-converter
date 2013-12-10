@@ -20,10 +20,10 @@ module TmlTokenParser
     end
 
     def parse
-      @builder.section('xlmns' => MEI_NS) {
+      @builder.section('xmlns' => MEI_NS) {
         staff = @builder.staff {
           @builder.layer {
-            @builder.comment(" #{@tokens.join(',')} ")
+            @builder.comment(" #{@line} ")
             parse_next() while tokens_left?
           }
         }

@@ -86,8 +86,7 @@ describe "app" do
     end
 
     it "wraps contents in <section><staff><layer> tags" do
-      res = find_xpath(last_response, '/mei:section/mei:staff/mei:layer',
-                       {:mei => mei_ns})
+      res = find_xpath(last_response, '/section/staff/layer')
       expect(res).to have(1).items
     end
 
@@ -99,31 +98,6 @@ describe "app" do
     it "contains a comment with the original token" do
       res = find_xpath(last_response, 'string(//comment())')
       expect(res.strip).to be == '[B]'
-    end
-
-    # ensure that the output still has the right structure
-    # <section><staff><layer>, even if the example itself contains
-    # <staff> elements
-    context "nested staffs" do
-      before(:each) { post '/convert', {:tml_code => '[C,L,B,B]'} }
-
-      it "rearranges <staff> tags with nested staffs" do
-        res = find_xpath(last_response, '/mei:section/mei:staff/mei:layer',
-                         {:mei => mei_ns})
-        expect(res).to have(1).items
-      end
-
-      it "doesn't add extraneous staffs" do
-        res = find_xpath(last_response, '/mei:section/mei:staff/mei:layer/mei:staff',
-                         {:mei => mei_ns})
-        expect(res).to have(0).items
-      end
-
-      it "keeps the MEI namespace on the <section> tag" do
-        mei_ns = 'http://www.music-encoding.org/ns/mei'
-        res = find_xpath(last_response, '/mei:section', 'mei' => mei_ns)
-        expect(res).to have(1).items
-      end
     end
 
   end

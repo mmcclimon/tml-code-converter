@@ -24,20 +24,9 @@ end
 post '/convert' do
   line = params[:tml_code].chomp
 
-  builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
-    tokenizer = TmlCodeTokenizer.new(xml)
-    parser = TmlTokenParser::Parser.new(xml, tokenizer.tokenize(line))
-    xml.section('xmlns' => MEI_NS) {
-      xml.staff {
-        xml.layer {
-          xml.comment(" #{line} ")
-          parser.parse()
-        }
-      }
-    }
-  end
-
-  builder.to_xml
+  parser = TmlTokenParser::Parser.new(line)
+  parser.parse()
+  parser.output_xml()
 end
 
 # this is just so that a cron job can hit this site so that the heroku

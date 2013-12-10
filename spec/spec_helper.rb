@@ -3,6 +3,8 @@
 require 'nokogiri'
 require 'tml_token_parser'
 
+MEI_NS = 'http://www.music-encoding.org/ns/mei'
+
 def get_builder
   Nokogiri::XML::Builder.new { |xml| xml }
 end
@@ -32,8 +34,13 @@ def parse_multiple(token_string)
   p.get_builder()
 end
 
-def xpath(builder, query)
+def xpath(builder, query, ns=nil)
   doc = Nokogiri::XML(builder.to_xml)
-  doc.xpath(query)
+  if ns
+    doc.xpath(query, ns)
+  else
+    doc.remove_namespaces!
+    doc.xpath(query)
+  end
 end
 
