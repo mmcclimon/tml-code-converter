@@ -26,15 +26,10 @@ def parse(token)
 end
 
 # Used when needing to test nesting elements. Depens on TmlTokenParser::Parser
-def parse_multiple(tokens)
-  builder = get_builder()
-  p = TmlTokenParser::Parser.new(builder, tokens)
-
-  builder.root {
-    p.parse()
-  }
-  builder
-
+def parse_multiple(token_string)
+  p = TmlTokenParser::Parser.new(token_string)
+  p.parse()
+  p.get_builder()
 end
 
 def xpath(builder, query)

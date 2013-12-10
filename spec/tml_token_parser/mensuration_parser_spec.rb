@@ -37,7 +37,7 @@ describe TmlTokenParser::MensurationParser do
     end
 
     it "outputs multiple staffDef/staff pairs with multiple mensurations" do
-      xml = parse_multiple(['C', 'L', 'B', 'O', 'L'])
+      xml = parse_multiple('C,L,B,O,L')
       expect(xpath(xml, '//mensur')).to have(2).items
     end
 

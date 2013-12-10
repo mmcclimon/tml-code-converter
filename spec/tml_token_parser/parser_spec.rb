@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 def match_t(token)
-  p = TmlTokenParser::Parser.new(get_builder(), [])
+  p = TmlTokenParser::Parser.new('')
   p.send(:match_token, token)
 end
 
@@ -14,9 +14,9 @@ describe TmlTokenParser::Parser do
   # is done in the individual classes
   describe "#parse" do
     it "parses correctly" do
-      xml = parse_multiple(['L', 'B'])
-      expect(xpath(xml, '/root/note[@dur="longa"]')).to have(1).items
-      expect(xpath(xml, '/root/note[@dur="brevis"]')).to have(1).items
+      xml = parse_multiple('L,B')
+      expect(xpath(xml, '//note[@dur="longa"]')).to have(1).items
+      expect(xpath(xml, '//note[@dur="brevis"]')).to have(1).items
     end
   end
 
