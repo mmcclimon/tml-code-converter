@@ -36,8 +36,8 @@ describe TmlTokenParser::MensurationParser do
       expect(xpath(xml, 'string(//mensur/@label)')).to be == 'CL'
     end
 
-    it "outputs multiple staffDef/staff pairs with multiple mensurations" do
-      xml = parse_multiple(['C', 'L', 'B', 'O', 'L'])
+    it "outputs multiple <mensur> elements with multiple mensurations" do
+      xml = parse_multiple('C,L,B,O,L')
       expect(xpath(xml, '//mensur')).to have(2).items
     end
 

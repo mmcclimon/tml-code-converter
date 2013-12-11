@@ -1,22 +1,41 @@
 #!/usr/bin/env ruby
 
+require './lib/tml_code_tokenizer'
+
 module TmlTokenParser
   class Parser
 
+    MEI_NS = 'http://www.music-encoding.org/ns/mei'
     attr_reader :next_token
 
     # Params:
     # *+builder+:: a <tt>Nokogiri::XML::Builder</tt> instance
     # *+tokens+:: a parsed set of tokens, returned by a +TmlCodeTokenizer+
-    def initialize (builder, tokens)
-      @builder = builder
-      @tokens = tokens
+    def initialize (line)
+      @builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') { |b| b }
+      @line = line
+      @tokens = TmlCodeTokenizer.tokenize(line)
       @current_index = 0
       set_next_token()
     end
 
     def parse
-      parse_next() while tokens_left?
+      @builder.section('xmlns' => MEI_NS) {
+        staff = @builder.staff {
+          @builder.layer {
+            @builder.comment(" #{@line} ")
+            parse_next() while tokens_left?
+          }
+        }
+      }
+    end
+
+    def get_builder
+      @builder
+    end
+
+    def output_xml
+      @builder.to_xml
     end
 
     def tokens_left?

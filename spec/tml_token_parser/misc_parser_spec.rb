@@ -28,7 +28,7 @@ describe TmlTokenParser::MiscParser do
     end
 
     it "outputs elements wrapped in <supplied> for square brackets" do
-      xml = parse_multiple(%w{[ B ]})
+      xml = parse_multiple('L,[B]')
       expect(xpath(xml, '//supplied/note[@dur="brevis"]')).to have(1).items
     end
 

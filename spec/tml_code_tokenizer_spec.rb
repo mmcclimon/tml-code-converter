@@ -4,11 +4,9 @@ require 'nokogiri'
 require 'tml_code_tokenizer'
 
 describe TmlCodeTokenizer do
-  let(:builder) { Nokogiri::XML::Builder.new }
-  subject(:tokenizer) { TmlCodeTokenizer.new(builder) }
 
   def t(str)
-    tokenizer.tokenize(str)
+    TmlCodeTokenizer.tokenize(str)
   end
 
   describe "#tokenize" do
