@@ -34,6 +34,12 @@ describe TmlTokenParser::Parser do
       expect(match_t('ClefZ')).to be_instance_of(TmlTokenParser::ClefParser)
     end
 
+    it "matches 'on staffN' to ClefParser" do
+      expect(match_t('on staff3')).to be_instance_of(TmlTokenParser::ClefParser)
+      expect(match_t(' on staff4')).to be_instance_of(TmlTokenParser::ClefParser)
+      expect(match_t(' on staff5')).to be_instance_of(TmlTokenParser::ClefParser)
+    end
+
     it "matches rests to RestParser" do
       expect(match_t('MXP')).to be_instance_of(TmlTokenParser::RestParser)
       expect(match_t('LP')).to be_instance_of(TmlTokenParser::RestParser)
