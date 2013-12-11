@@ -75,5 +75,12 @@ describe TmlTokenParser::ClefParser do
 
     end
 
+    context 'on staffX' do
+      it "sets a 'lines' attribute on the most recent staffDef" do
+        xml = parse_multiple("ClefC4,L,B on staff5")
+        expect(xpath(xml, 'string(//staffDef/@lines)')).to eq('5')
+      end
+    end
+
   end
 end

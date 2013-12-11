@@ -48,11 +48,6 @@ module TmlTokenParser
       when @token == ' '
         @builder.send(:barLine, {'rend' => 'invis'})
 
-      when @token.match(/\s*on staff(\d)/)
-        num_lines = $1
-        @parent.set_staff_attrs('lines', num_lines)
-        # @builder.comment(" on #{$1}-line staff ")
-
       else
         throw :unrecognized, 'no_key'
       end

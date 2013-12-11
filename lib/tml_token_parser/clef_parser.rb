@@ -14,8 +14,14 @@ module TmlTokenParser
 
       # not sure how MEI does clefs, so return a comment for now
       err = catch :unrecognized do
-        args = " #{do_clef} "
-        args += do_line
+
+        if @token.match(/staff/)
+          args = do_num_lines
+          return
+        else
+          args = " #{do_clef} "
+          args += do_line
+        end
         nil
       end
 
@@ -46,5 +52,12 @@ module TmlTokenParser
       @parent.set_staff_attrs('clef.line', matches[1])
     end
 
+    def do_num_lines
+      matches = @token.match(/\s*on staff(\d)/)
+      throw :unrecognized, 'bad_staff' if matches.nil?
+
+      num_lines = matches[1]
+      @parent.set_staff_attrs('lines', num_lines)
+    end
   end
 end

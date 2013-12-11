@@ -76,7 +76,7 @@ module TmlTokenParser
       case
         when token.match(/^Lig/)
           TmlTokenParser::LigParser.new(@builder, token)
-        when token.match(/^Clef/)
+        when token.match(/^Clef/) || token.match(/on staff\d/)
           TmlTokenParser::ClefParser.new(@builder, token)
         when token.match(/P/)    # only rests have a P
           TmlTokenParser::RestParser.new(@builder, token)
