@@ -1,10 +1,13 @@
 #!/usr/bin/env ruby
 
+# Parsing class for Rest tokens
 module TmlTokenParser
   class RestParser < GeneralParser
 
+    # Most of the functionality here is handled by the Values module
     include TmlTokenParser::Values
 
+    # Parse this token into XML, <rest> elements.
     def parse
       args = {}
 
@@ -19,7 +22,7 @@ module TmlTokenParser
         len = do_length(mult, args['dur'])
         args['len'] = len if len
 
-        nil
+        nil       # ensure block returns falsy
       end
 
       @builder.send(:rest, args) unless err

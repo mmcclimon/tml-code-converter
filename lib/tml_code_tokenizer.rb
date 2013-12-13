@@ -1,14 +1,13 @@
 #!/usr/bin/env ruby
 
-# Main Tokenizer class, calls TmlTokenParser::Parser
-# to do all of the hard work
+# Tokenizer class, contains a single method 'tokenize' that splits a string
+# of TML code into valid tokens
 class TmlCodeTokenizer
 
   # param +str+ is a TML code string with optional square brackets, e.g.
   # [Lig2d,L,L,L,Bcsdx,Bcsdx,L,L,Lig2d,Lig2d]
   def self.tokenize(str)
     str = prepare_string(str)
-    # split into tokens
     tokens = str.split(/(;\ ?|                  # semicolon, with optional space
                          \ ?on\ staff\d\ ?|     # on staffX, optional spaces
                          ,|                     # comma

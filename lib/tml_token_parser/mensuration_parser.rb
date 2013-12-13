@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+# Parsing class for mensuration signs.
 module TmlTokenParser
   class MensurationParser < GeneralParser
 
@@ -13,8 +14,7 @@ module TmlTokenParser
       'TR' => 'triangle',
     }
 
-    # until we figure out how MEI does mensuration, we'll put these in
-    # as comments
+    # Parse this token into XML, <mensur> element.
     def parse
       args = {}
       xml_id = ''
@@ -31,21 +31,22 @@ module TmlTokenParser
           args['mensur.sign'] = sign
         end
 
+        # store the original token in a 'label' attribute, easier to debug
         args['label'] = @token
-        nil
+
+        nil     # ensure block exits falsy
       end
 
-      if err
-        unrecognized(@token, err)
-        return
-      end
-
-      @builder.mensur(args)
+      unrecognized(@token, err) if err
+      @builder.mensur(args) unless err
 
     end
 
     private
 
+    # Handles the mensuration sign, which appears in capital letters at
+    # beginning of token. Throws +:unrecognized+ if it doesn't find one, or if
+    # it finds one it doesn't recognize.
     def do_mensuration
       matches = @token.match(/^([A-Z]+)/)
       throw :unrecognized, 'no_match' if matches.nil?
@@ -57,6 +58,9 @@ module TmlTokenParser
       end
     end
 
+    # Try to parse the lowercase letters that follow the sign proper. Sets
+    # attributes on the <mensur> element.
+    #
     # NB: this modifies args in place to avoid a bunch of ifs in the main
     # parse() body. It's not complete yet.
     def do_post!(args)
@@ -71,6 +75,7 @@ module TmlTokenParser
       args
     end
 
+    # Handles orientation attributes for rotated semicircles
     def do_orientation(sign)
       case sign
         when 'CL' then 'reversed'

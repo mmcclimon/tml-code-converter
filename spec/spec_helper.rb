@@ -9,19 +9,12 @@ def get_builder
   Nokogiri::XML::Builder.new { |xml| xml }
 end
 
-def get_parent_stub
-  obj = {}
-  obj.stub(:tokens_left? => false)
-  obj
-end
-
 def parse(token)
   builder = get_builder()
 
   # Output a root element so we're sure the XML is  well-formed
   builder.root {
     p = described_class.new(builder, token)
-    p.set_parent(get_parent_stub())
     p.parse()
   }
   builder
@@ -31,7 +24,7 @@ end
 def parse_multiple(token_string)
   p = TmlTokenParser::Parser.new(token_string)
   p.parse()
-  p.get_builder()
+  p.instance_variable_get("@builder")
 end
 
 def xpath(builder, query, ns=nil)

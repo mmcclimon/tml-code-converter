@@ -5,9 +5,6 @@ require 'nokogiri'
 require './lib/tml_code_tokenizer'
 require './lib/tml_token_parser'
 
-MEI_NS = 'http://www.music-encoding.org/ns/mei'
-NAMESPACES = {:mei => MEI_NS}
-
 get '/' do
   erb :index
 end
@@ -21,6 +18,8 @@ get '/convert' do
   "You must access this page via the form on the front page"
 end
 
+# gets a POST param 'tml_code', which is passed into the parser to do all
+# of the hard work
 post '/convert' do
   line = params[:tml_code].chomp
 

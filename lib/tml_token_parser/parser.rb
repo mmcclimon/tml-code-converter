@@ -2,6 +2,10 @@
 
 require './lib/tml_code_tokenizer'
 
+# The main Parsing class. Gets a string of TML code and outputs XML.
+#
+# Uses Nokogiri::XML::Builder to build the XML and ultimately output it.
+# Always encoded in UTF-8, in an MEI-namespaced <section> tag.
 module TmlTokenParser
   class Parser
 
@@ -9,8 +13,7 @@ module TmlTokenParser
     attr_reader :next_token
 
     # Params:
-    # *+builder+:: a <tt>Nokogiri::XML::Builder</tt> instance
-    # *+tokens+:: a parsed set of tokens, returned by a +TmlCodeTokenizer+
+    # *+line+:: an unparsed string of TML Code
     def initialize (line)
       @builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') { |b| b }
       @tokens = TmlCodeTokenizer.tokenize(line)
@@ -21,6 +24,11 @@ module TmlTokenParser
       set_next_token()
     end
 
+    # Parses the whole string into XML, which can then be retrieved with
+    # +output_xml()+.
+    #
+    # This sets up the initial MEI-namespaced <section> tag along with a
+    # comment containing the original line (useful for debugging output).
     def parse
       @builder.section('xmlns' => MEI_NS) {
         @builder.comment(" #{@line} ")
@@ -28,22 +36,25 @@ module TmlTokenParser
       }
     end
 
-    def get_builder
-      @builder
-    end
-
+    # Outputs the XML stored by a call to +parse()+
     def output_xml
       @builder.to_xml
     end
 
+    # Sets XML attributes for the most recent <staffDef> tag
+    #
+    # We do this by storing some state in the +@staff_attrs+ hash, which is
+    # then used to set the attributes on the <staffDef> tag in a private
+    # method
     def set_staff_attrs(key, val)
       @staff_attrs[key] = val
     end
 
-    def tokens_left?
-      @current_index <= @tokens.length
-    end
-
+    # Parses the next token in line and sets +@next_token+ for next time.
+    #
+    # This is useful is other classes want to open a tag and continue parsing
+    # until they see some other token, when they will close the tag they'd
+    # opened.
     def parse_next
       t = @next_token
       set_next_token()
@@ -53,7 +64,7 @@ module TmlTokenParser
 
     # Clients call this with the current token, which will end the current
     # <staff> element (with assoc. <staffDef>) and start a new one.
-    # Throws :new_staff
+    # Throws :new_staff.
     #
     # If called, that means we need to unwind the stack a bit.
     # We need to redo the current token so the clef gets processed...the throw
@@ -70,8 +81,16 @@ module TmlTokenParser
       @num_staffs += 1
     end
 
+    # ----------------#
+    # Private methods #
+    # ----------------#
     private
 
+    # Dispatches tokens to appropriate TmlTokenParser classes.
+    #
+    # This is where the logic of what parsing the tokens into meaningful
+    # values actually takes place. If something gets sent to the wrong place
+    # here you'll wind up with a bunch of UNRECOGNIZED tags.
     def match_token(token)
       case
         when token.match(/^Lig/)
@@ -90,6 +109,7 @@ module TmlTokenParser
       end
     end
 
+    # Sets +@next_token+ to an appropriate TmlTokenParser object.
     def set_next_token
       token = @tokens[@current_index]
       @current_index += 1
@@ -100,12 +120,19 @@ module TmlTokenParser
       @next_token = child
     end
 
+    # Responsible for setting up <staff> and <layer> tags and doing most of
+    # the actual parsing work.
+    #
+    # It has to be responsible for catching the :new_staff symbol and dealing
+    # with closing the current <staff> and opening a new one in the correct
+    # location.
     def do_staffs
       repeat = false
+
       staffDef = @builder.staffDef
       staff = @builder.staff {
         @builder.layer {
-          while tokens_left?
+          while @current_index <= @tokens.length
             do_again = catch(:new_staff) { parse_next() }
 
             # We need to catch the :new_staff, but we actually want to finish
@@ -136,9 +163,7 @@ module TmlTokenParser
         @staff_attrs = {}
         do_staffs()
       end
-
     end
 
-
-  end
-end
+  end # class
+end   # module

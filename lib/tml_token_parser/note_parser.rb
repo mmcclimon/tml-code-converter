@@ -1,10 +1,13 @@
 #!/usr/bin/env ruby
 
+# Parsing class for Note tokens
 module TmlTokenParser
   class NoteParser < GeneralParser
 
+    # Most of the functionality here is handled by the Values module.
     include TmlTokenParser::Values
 
+    # ...except for coloration, which rests don't have.
     @@colorations = {
       'b'  => 'nigra',
       'v'  => 'vacua',
@@ -13,11 +16,13 @@ module TmlTokenParser
       'sr' => 'semirubea',
     }
 
+    # Parse this token into XML, <note> elements
+    #
+    # XXX figure out what to do with tails
     def parse
-      args = {}   # the eventual arguments we'll send to the builder
+      args = {}
 
       err = catch(:unrecognized) do
-        # XXX figure out what to do with tails
         mult = do_multiples(@token)
         args['dur'] = do_values(@token)
 
@@ -27,7 +32,7 @@ module TmlTokenParser
         color = do_coloration(@token)
         args['color'] = color if color
 
-        nil   # ensure block exits with nil if no error caught
+        nil   # ensure block returns falsy
       end
 
       @builder.send(:note, args) unless err
@@ -36,6 +41,7 @@ module TmlTokenParser
 
     private
 
+    # Handles note coloration, returns a string containing the correct color
     def do_coloration(token)
       matches = token.match(/^[A-Z]+(b|v|r|sv|sr)/)
       return nil if matches.nil?
