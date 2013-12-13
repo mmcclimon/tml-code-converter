@@ -1,5 +1,9 @@
 # TML Code Converter
 
+[![Build Status](https://travis-ci.org/mmcclimon/tml-code-converter.png?branch=master)](https://travis-ci.org/mmcclimon/tml-code-converter)
+[![Coverage Status](https://coveralls.io/repos/mmcclimon/tml-code-converter/badge.png)](https://coveralls.io/r/mmcclimon/tml-code-converter)
+[![Code Climate](https://codeclimate.com/github/mmcclimon/tml-code-converter.png)](https://codeclimate.com/github/mmcclimon/tml-code-converter)
+
 This is an attempt to convert the codes for noteshapes used in the
 [Thesaurus Musicarum Latinarum](http://chmtl.indiana.edu/tml) to
 something more readable. For now, this means trying to convert to
