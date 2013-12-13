@@ -43,12 +43,12 @@ module TmlTokenParser
         return
 
       # semicolon => <barLine rend="single"/>
-      when @token == ';'
+      when @token == '; '
         @builder.send(:barLine, {'rend' => 'single'})
 
-      # semicolon => <barLine rend="single"/>, warn about space
-      when @token == '; '
-        @builder.send(:comment, " Warning: semicolon with space in example ")
+      # semicolon => <barLine rend="single"/>, warn about no space
+      when @token == ';'
+        @builder.send(:comment, " Warning: semicolon with no space in example ")
         @builder.send(:barLine, {'rend' => 'single'})
 
       # space => <barLine rend="invis"/>

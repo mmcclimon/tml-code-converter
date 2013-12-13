@@ -17,8 +17,8 @@ describe TmlTokenParser::MiscParser do
 
     # semicolon with space is an error in the TML code, so put out a comment
     # so we can fix it
-    it "outputs a warning comment for '; '" do
-      xml = parse("; ")
+    it "outputs a warning comment for semicolon with no space" do
+      xml = parse(";")
       expect(xpath(xml, 'string(//comment())')).to match(/warning.*semicolon/i)
     end
 
