@@ -2,6 +2,8 @@
 
 require 'nokogiri'
 require 'tml_token_parser'
+require 'coveralls'
+Coveralls.wear!
 
 MEI_NS = 'http://www.music-encoding.org/ns/mei'
 

@@ -8,6 +8,7 @@ gem 'sinatra', '>=1.3.0'
 gem 'nokogiri'
 gem 'rspec'
 gem 'rack-test'
+gem 'coveralls', require: false
 
 group :development do
   gem 'shotgun'
