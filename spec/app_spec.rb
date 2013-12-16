@@ -99,6 +99,12 @@ describe "app" do
       res = find_xpath(last_response, 'string(//comment())')
       expect(res.strip).to be == '[B]'
     end
+  end
 
+  describe "GET /cron.txt" do
+    it "returns a simple text document" do
+      get '/cron.txt'
+      expect(last_response.body).to eq('ok')
+    end
   end
 end
